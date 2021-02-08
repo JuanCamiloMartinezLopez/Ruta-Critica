@@ -13,6 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import logica.Logica;
 import logica.Nodo;
@@ -20,7 +22,9 @@ import logica.Nodo;
 public class Vista extends JFrame{
 	
 	JLabel titulo;
+	JTextArea resultado;
 	JButton boton;
+	JScrollPane resultadoScroll;
 	
 	Tablero tablero;
 	ListaAdyacencia LA;
@@ -46,24 +50,50 @@ public class Vista extends JFrame{
 		
 		LA= new ListaAdyacencia();
 		LA.setLog(log);
-		LA.setBounds(190, 270, 120, 100);
+		//LA.setBounds(190, 270, 120, 100);
 		LA.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		LA.repaint();
 		this.getContentPane().add(LA);
 		tablero.setLa(LA);
 		
-		boton= new JButton("prueba");
-		boton.setBounds(200, 400, 50, 20);
+		resultado= new JTextArea();
+		resultado.setEditable(false);
+		resultado.setLineWrap(true);
+		resultadoScroll=new JScrollPane(resultado);
+		resultadoScroll.setBounds(140, 250, 350, 280);
+		resultado.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		this.getContentPane().add(resultadoScroll);
+		
+		resultado.append("                       Original                Inverso\n");
+		
+		boton= new JButton("Calcular");
+		boton.setBounds(10, 535, 120, 20);
 		boton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Object data[][]=LA.obtenerInfo();
-				for(int i=0;i<data.length;i++) {
+				/*for(int i=0;i<data.length;i++) {
 					System.out.println(data[i][0]+"->"+data[i][1]);
-				}
-				
+				}*/
+				log.agregarEnlaces(data);
+				tablero.paintEnlaces();
+				log.generarGrafoInverso();
+				log.MostrarGrafos();
+				log.NodoInicial();
+				log.NodoFinal();
+				log.tiemposTem();
+				//log.recorrerOriginal();
+				log.calcularTiempos();
+				//log.distanciasNodoInicial();
+				tablero.paintRutaCritica();
+				resultado.append(log.infoGrafos());
+				resultado.append(log.infoEventos());
+				resultado.append(log.infoRutaCritica());
 			}
 		});
 		this.getContentPane().add(boton);
+		
+		this.repaint();
 	}
 	
 }

@@ -57,11 +57,33 @@ public class Nodo {
 		this.puntos[2].info();
 		System.out.print("4:");
 		this.puntos[3].info();
+		this.infoEnlaces();
 		System.out.println("-------------");
 	}
 
+	public void infoEnlaces() {
+		System.out.print(num+"->");
+		for(int i=0;i<numEnlaces;i++) {
+			System.out.print(this.enlaces.get(i).info()+"-");
+		}
+		System.out.println("");
+	}
+	public String infoEnlacesString() {
+		String info = "";
+		info+=String.valueOf(num)+"->";
+		for(int i=0;i<numEnlaces;i++) {
+			info+=this.enlaces.get(i).info()+"-";
+		}
+		info=info.substring(0, info.length()-1);
+		info+="\n";
+		return info;
+	}
+	
 	public int getNumEnlaces() {
 		return numEnlaces;
 	}
-	
+
+	public ArrayList<Enlace> getEnlaces() {
+		return enlaces;
+	}
 }

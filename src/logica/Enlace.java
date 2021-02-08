@@ -16,8 +16,10 @@ public class Enlace {
 	}
 	
 	public void setPuntosConexion(Point p[]) {
+		p[0].info();
+		p[1].info();
 		this.setPinicial(p[0]);
-		this.setPinicial(p[1]);
+		this.setPFinal(p[1]);
 	}
 
 	public Nodo getInicial() {
@@ -66,5 +68,9 @@ public class Enlace {
 
 	public void setPFinal(Point pFinal) {
 		PFinal = pFinal;
+	}
+	
+	public String info() {
+		return String.valueOf(this.Final.num)+","+this.actividad+","+this.duracion;
 	}
 }

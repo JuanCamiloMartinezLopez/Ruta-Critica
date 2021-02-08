@@ -1,6 +1,7 @@
 package interfaz;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -19,21 +20,24 @@ public class ListaAdyacencia extends JPanel{
 	DefaultTableModel model;
 	
 	public ListaAdyacencia() {
-		this.setSize(120, 200);
-		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		model=new DefaultTableModel();
+		inicializar();
+	}
+	
+	public void inicializar() {
+		setBounds(10, 250, 120,280);
+		String[] columnNames = {"Nodo", "Adyacencia"};
+		Object data[][]=new Object[0][2];
+		//this.setSize(120, 200);
+		//this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		model=new DefaultTableModel(data, columnNames);
 		tabla= new JTable(model);
-		tabla.setBounds(0, 0, 120, 200);
+		tabla.setBounds(0, 0, 120,280);
+		//tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		System.out.println(model);
-		model.addColumn("Nodo");
-		model.addColumn("Adyacentes");
 		TableColumnModel columnModel = this.tabla.getColumnModel();
-		columnModel.getColumn(0).setPreferredWidth(30);
-		columnModel.getColumn(1).setPreferredWidth(70);
-		js=new JScrollPane(tabla);
-		js.setVisible(true);
-		this.add(js);
-		this.add(tabla);
+		columnModel.getColumn(0).setPreferredWidth(34);
+		columnModel.getColumn(1).setPreferredWidth(84);
+        add(tabla);
 	}
 	
 	public void actualizarTabla() {
