@@ -99,11 +99,18 @@ public class Tablero extends JPanel{
 		ArrayList<Nodo> nodos=this.log.getRutaCritica();
 		ArrayList<Enlace> enlaces;
 		Enlace enlace;
+		System.out.println("tamaño nodos RC "+nodos.size());
 		for(int i=0;i<nodos.size()-1;i++) {
 			enlaces=nodos.get(i).getEnlaces();
 			for(int j=0;j<enlaces.size();j++) {
 				enlace=enlaces.get(j);
-				if(enlace.inicial!=nodos.get(i) || enlace.Final!=nodos.get(i+1))continue;
+				System.out.println("enlace "+enlace.info()+ " del nodo ");
+				nodos.get(i).info();
+				if(enlace.inicial.getNum()!=nodos.get(i).getNum() || enlace.Final.getNum()!=nodos.get(i+1).getNum()) {
+					System.out.println("descartado");
+					continue;
+				}
+				System.out.println("agregado");
 				paintRutaCritica(this.getGraphics(),enlace.getPinicial(),enlace.getPFinal());
 			}
 		}

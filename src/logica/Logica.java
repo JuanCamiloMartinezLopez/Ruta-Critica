@@ -136,6 +136,7 @@ public class Logica {
 		for(int i=0;i<numNodos;i++) {
 			System.out.print(this.tiemposTarde[i]+ " ");
 		}
+		this.tiemposTarde[this.nInicial.num-1]=0;
 	}
 	
 	public void llenarTiemposTemprano(Nodo nod) {
@@ -299,136 +300,7 @@ public class Logica {
 		this.recorrerinversa();
 		this.construirRutaCritica();
 	}
-
-	public void tiemposTem() {
-		/*for (int i = 0; i < this.numNodos; i++) {
-			this.tiemposTem.add(this.caminoTem(nInicial, i + 1, 0));
-		}
-
-		for (int i = 0; i < this.tiemposTem.size(); i++) {
-			System.out.println((i + 1) + ":" + this.tiemposTem.get(i));
-		}*/
-		
-		for (int i = 0; i < this.numNodos; i++) {
-			this.caminoTem(nInicial.num, i+1);
-		}
-		System.out.println("------------------------");
-	}
-
-	public void tiemposTar() {
-		System.out.println("tiempo tem final: " + this.tiemposTem.get(nFinal.num - 1));
-		for (int i = 0; i < this.numNodos; i++) {
-			this.tiemposTar.add(0);
-		}
-
-		for (int i = this.numNodos; i > 0; i--) {
-			this.tiemposTar.set(i - 1, this.caminoTar(nFinal, i, this.tiemposTem.get(nFinal.num - 1)));
-			System.out.println("------------------------");
-		}
-
-		for (int i = 0; i < this.tiemposTar.size(); i++) {
-			System.out.println((i + 1) + ":" + this.tiemposTar.get(i));
-		}
-		System.out.println("------------------------");
-	}
-
-	public int[] caminoTem() {
-		return null;
-	}
 	
-	public void caminoTem(int nodoInicial, int nodoFinal) {
-		Nodo nf= this.GrafoInvertido.get(nodoFinal-1);
-		Nodo aux;
-		Camino camino;
-		ArrayList<Enlace> enlaces;
-		Enlace enlace = null;
-		Enlace enlaceFinal = null;
-		int tiempo=0;
-		System.out.println("Nodo final:"+nf.num);
-		ArrayList<Camino> Caminos= new ArrayList<Camino>();
-		for(Enlace enl: nf.getEnlaces()) {
-			System.out.println("enlace: "+enl.info());
-			if(enl.Final.num==nodoInicial) {
-				camino=new Camino(nodoInicial,nodoFinal);
-				camino.añadirnodo(-1);
-				Caminos.add(camino);
-				break;
-			}
-			aux=enl.Final;
-			camino=new Camino(nodoInicial,nodoFinal);
-			while(!(aux.num==nodoInicial)) {
-				enlaces = aux.getEnlaces();
-				System.out.println("nodo actual:"+aux.num);
-				for (int j = 0; j < aux.numEnlaces; j++) {
-					enlace = enlaces.get(j);
-					if(nodoInicial==enlace.Final.num) {
-						enlaceFinal=enlace;
-						break;
-					}
-					if (tiempo == 0) {
-						tiempo = enlace.getDuracion();
-						enlaceFinal = enlace;
-					} else {
-						if (tiempo < enlace.getDuracion()) {
-							tiempo = enlace.getDuracion();
-							enlaceFinal = enlace;
-						} else {
-							continue;
-						}
-					}
-				}
-				aux=enlaceFinal.Final;
-				camino.añadirnodo(enlaceFinal.Final.num);
-			}
-			Caminos.add(camino);
-		}
-		System.out.println("====Inicio===");
-		System.out.println("Caminos del nodo "+nodoInicial+" al nodo "+nodoFinal);
-		for(Camino c:Caminos ) {
-			c.info();
-		}
-		System.out.println("====Final===");
-	}
-
-	public int caminoTem(Nodo n, int objetivo, int tiempoFinal) {
-		Nodo nod;
-		int tiempo = 0;
-		ArrayList<Enlace> enlaces;
-		Enlace enlace = null;
-		Enlace enlaceFinal = null;
-		System.out.println("Nodo actual: " + n.num);
-		System.out.println("Nodo objetivo: " + objetivo);
-		System.out.println("tiempo: " + tiempoFinal);
-		if (n.num == objetivo) {
-			return tiempoFinal;
-		}
-		enlaces = n.getEnlaces();
-		for (int j = 0; j < n.numEnlaces; j++) {
-			enlace = enlaces.get(j);
-			if (enlace.Final.num == objetivo) {
-				tiempo = enlace.getDuracion();
-				enlaceFinal = enlace;
-				break;
-			} else {
-				if (tiempo == 0) {
-					tiempo = enlace.getDuracion();
-					enlaceFinal = enlace;
-				} else {
-					if (tiempo < enlace.getDuracion()) {
-						tiempo = enlace.getDuracion();
-						enlaceFinal = enlace;
-
-					} else {
-						continue;
-					}
-				}
-			}
-		}
-		System.out.println("siguiente nodo: " + enlaceFinal.Final.num);
-		System.out.println("Tiempo: " + (tiempoFinal + tiempo));
-		return caminoTem(enlaceFinal.Final, objetivo, tiempoFinal + tiempo);
-	}
-
 	public ArrayList<Camino> caminos() {
 		return null;
 	}
@@ -510,11 +382,28 @@ public class Logica {
 	}
 
 	public void construirRutaCritica() {
+		ArrayList<Nodo> aux= new ArrayList<Nodo>();
+		ArrayList<Integer> NodoRC=new ArrayList<Integer>();
+		int iNod;
 		for (int i = 0; i < this.numNodos; i++) {
 			if (this.tiemposTemprano[i]==this.tiemposTarde[i]) {
-				this.rutaCritica.add(this.GrafoOriginal.get(i));
+				if(i!=this.nInicial.num-1 && i!=this.nFinal.num-1) {
+					aux.add(this.GrafoOriginal.get(i));
+					NodoRC.add(i);
+				}
 			}
 		}
+		this.rutaCritica.add(this.nInicial);
+		iNod=this.nInicial.num-1;
+		for( int j= 0;j<NodoRC.size();j++) {
+			for(int k=0; k<this.numNodos;k++) {
+				if(this.MatrizAdyacencia[iNod][k]!=-1 && NodoRC.contains(k)) {
+					this.rutaCritica.add(aux.get(NodoRC.indexOf(k)));
+					iNod=k;
+				}
+			}
+		}
+		this.rutaCritica.add(this.nFinal);
 		System.out.println("Ruta critica");
 		for (int i = 0; i < this.rutaCritica.size(); i++) {
 			System.out.println(this.rutaCritica.get(i).num);
@@ -591,10 +480,28 @@ public class Logica {
 	public String infoRutaCritica() {
 		String info="";
 		info+="Ruta Critica\n";
+		info+="Eventos\n";
 		for(Nodo nod: this.rutaCritica) {
 			info+=nod.num+"->";
 		}
 		info=info.substring(0, info.length()-2);
+		info+="\n";
+		info+="\n";
+		info+="Actividades\n";
+		for(int i=0; i<this.rutaCritica.size()-1;i++) {
+			for(Enlace enl:this.rutaCritica.get(i).getEnlaces()) {
+				if(enl.inicial.num==this.rutaCritica.get(i).num && enl.Final.num==this.rutaCritica.get(i+1).num) {
+					info+="a"+enl.actividad+" ";
+				}
+			}
+		}
+		return info;
+	}
+	
+	public String infoDuracionRutaCritica() {
+		String info="";
+		info+="\n\nSiendo la duracion total de la ruta critica:\n";
+		info+=this.tiemposTemprano[this.nFinal.num-1];
 		return info;
 	}
 	

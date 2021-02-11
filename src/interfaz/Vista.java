@@ -64,14 +64,13 @@ public class Vista extends JFrame{
 		resultado.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		this.getContentPane().add(resultadoScroll);
 		
-		resultado.append("                       Original                Inverso\n");
-		
 		boton= new JButton("Calcular");
 		boton.setBounds(10, 535, 120, 20);
 		boton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Object data[][]=LA.obtenerInfo();
+				//Object data[][]=LA.obtenerInfoPrueba();
 				/*for(int i=0;i<data.length;i++) {
 					System.out.println(data[i][0]+"->"+data[i][1]);
 				}*/
@@ -81,7 +80,6 @@ public class Vista extends JFrame{
 				log.MostrarGrafos();
 				log.NodoInicial();
 				log.NodoFinal();
-				log.tiemposTem();
 				//log.recorrerOriginal();
 				log.calcularTiempos();
 				//log.distanciasNodoInicial();
@@ -89,6 +87,7 @@ public class Vista extends JFrame{
 				resultado.append(log.infoGrafos());
 				resultado.append(log.infoEventos());
 				resultado.append(log.infoRutaCritica());
+				resultado.append(log.infoDuracionRutaCritica());
 			}
 		});
 		this.getContentPane().add(boton);

@@ -3,7 +3,7 @@ package logica;
 import java.util.ArrayList;
 
 public class Nodo {
-	int num;
+	public int num;
 	int x;
 	int y;
 	int w;
@@ -85,5 +85,9 @@ public class Nodo {
 
 	public ArrayList<Enlace> getEnlaces() {
 		return enlaces;
+	}
+	
+	public int getNum() {
+		return this.num;
 	}
 }
